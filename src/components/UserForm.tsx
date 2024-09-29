@@ -22,7 +22,7 @@ const UserForm: React.FC = () => {
   useEffect(() => {
     const fetchPositions = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/v1/positions');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/positions`);
         const data = await response.json();
 
         if (data.success) {
@@ -39,7 +39,7 @@ const UserForm: React.FC = () => {
 
     const fetchToken = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/v1/token');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/token`);
         const data = await response.json();
 
         if (data.success) {
@@ -68,7 +68,7 @@ const UserForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/v1/users?token=${token}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/users?token=${token}`, {
         method: 'POST',
         body: formData,
       });
@@ -77,12 +77,12 @@ const UserForm: React.FC = () => {
         const errorData = await response.json();
 
         if (response.status === 422 && errorData.fails) {
-          setErrors(errorData.fails); // Set validation errors
+          setErrors(errorData.fails);
         } else {
           console.error('Server error: ', errorData.message);
         }
       } else {
-        setErrors({}); // Clear errors on success
+        setErrors({});
         navigate('/');
       }
     } catch (error) {
